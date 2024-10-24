@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* Previous styles remain the same up to big-heart */
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+      overflow: hidden;
+      cursor: pointer;
+      animation: backgroundShift 10s infinite alternate;
+    }
+
+    @keyframes backgroundShift {
+      0% { background: linear-gradient(45deg, #ff9a9e, #fad0c4); }
+      50% { background: linear-gradient(45deg, #a18cd1, #fbc2eb); }
+      100% { background: linear-gradient(45deg, #84fab0, #8fd3f4); }
+    }
+
+    .heart {
+      position: fixed;
+      font-size: 44px;
+      color: #ff4081;
+      user-select: none;
+      animation: float 4s ease-in-out infinite;
+      opacity: 0;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+    }
+
+    .rainbow-heart {
+      animation: float 4s ease-in-out infinite, rainbow 2s linear infinite;
+    }
+
+    .big-heart {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 300px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      animation: fadeIn 1s ease-in-out forwards, rainbow 2s linear infinite;
+    }
+
+    .big-heart img {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      z-index: 2;
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(255,255,255,0.5);
+    }
+
+    /* Rest of the previous styles remain the same */
+    @keyframes rainbow {
+      0% { color: #ff0000; }
+      20% { color: #ff69b4; }
+      40% { color: #ff00ff; }
+      60% { color: #4169e1; }
+      80% { color: #00ff00; }
+      100% { color: #ff0000; }
+    }
+
+    .particle {
+      position: absolute;
+      pointer-events: none;
+      animation: particle 1s ease-out forwards;
+    }
+
+    @keyframes particle {
+      0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+      }
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+      }
+      20% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) scale(1) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+      }
+      100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    .small-heart-tornado {
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      animation: tornadoMove 3s ease-in-out infinite;
+    }
+
+    @keyframes tornadoMove {
+      0%, 100% { transform: translateX(-50px); }
+      50% { transform: translateX(50px); }
+    }
+
+    .small-heart-tornado .heart {
+      font-size: 40px;
+      position: absolute;
+      animation: tornado-spin 1.5s linear infinite;
+    }
+
+    .small-heart-tornado .heart:nth-child(3n) {
+      animation: tornado-spin-outer 1.2s linear infinite;
+    }
+
+    .small-heart-tornado .heart:nth-child(3n+1) {
+      animation: tornado-spin-middle 1s linear infinite;
+    }
+
+    .small-heart-tornado .heart:nth-child(3n+2) {
+      animation: tornado-spin-inner 0.8s linear infinite;
+    }
+
+    @keyframes tornado-spin {
+      0% {
+        transform: rotate(0deg) translate(150px) rotate(0deg) scale(1);
+      }
+      50% {
+        transform: rotate(180deg) translate(200px) rotate(-180deg) scale(1.5);
+      }
+      100% {
+        transform: rotate(360deg) translate(150px) rotate(-360deg) scale(1);
+      }
+    }
+
+    @keyframes tornado-spin-outer {
+      0% {
+        transform: rotate(0deg) translate(250px) rotate(0deg) scale(1.2);
+      }
+      50% {
+        transform: rotate(180deg) translate(300px) rotate(-180deg) scale(1.8);
+      }
+      100% {
+        transform: rotate(360deg) translate(250px) rotate(-360deg) scale(1.2);
+      }
+    }
+
+    @keyframes tornado-spin-middle {
+      0% {
+        transform: rotate(0deg) translate(180px) rotate(0deg) scale(1.4);
+      }
+      50% {
+        transform: rotate(-180deg) translate(220px) rotate(180deg) scale(1.6);
+      }
+      100% {
+        transform: rotate(-360deg) translate(180px) rotate(360deg) scale(1.4);
+      }
+    }
+
+    @keyframes tornado-spin-inner {
+      0% {
+        transform: rotate(0deg) translate(100px) rotate(0deg) scale(0.8);
+      }
+      50% {
+        transform: rotate(-180deg) translate(150px) rotate(180deg) scale(1.2);
+      }
+      100% {
+        transform: rotate(-360deg) translate(100px) rotate(360deg) scale(0.8);
+      }
+    }
+
+    .title {
+      font-family: Arial, sans-serif;
+      color: white;
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      position: fixed;
+      top: 20px;
+      width: 100%;
+      z-index: 2;
+    }
+
+    .combo-counter {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-family: Arial, sans-serif;
+      color: white;
+      font-size: 24px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <h1 class="title">Click bất kì để bắn tim! ❤️</h1>
+  <div class="combo-counter">Đếm: 0</div>
+
+  <script>
+    let clickCount = 0;
+    let comboCount = 0;
+    let lastClickTime = 0;
+    const comboTimeout = 1000;
+
+    function createParticles(x, y) {
+      for (let i = 0; i < 8; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.innerHTML = '✨';
+        particle.style.left = x + 'px';
+        particle.style.top = y + 'px';
+        particle.style.setProperty('--tx', `${(Math.random() - 0.5) * 100}px`);
+        particle.style.setProperty('--ty', `${(Math.random() - 0.5) * 100}px`);
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 1000);
+      }
+    }
+
+    function createHeart(x, y, isRainbow = false) {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      if (isRainbow) heart.classList.add('rainbow-heart');
+      heart.innerHTML = '❤️';
+      heart.style.left = x + 'px';
+      heart.style.top = y + 'px';
+
+      const randomRotate = Math.random() * 360;
+      const randomDuration = 3 + Math.random() * 2;
+      const randomOffset = Math.random() * 100 - 50;
+
+      heart.style.animation = `float ${randomDuration}s ease-in-out`;
+      heart.style.transform = `rotate(${randomRotate}deg)`;
+      heart.style.left = `${x + randomOffset}px`;
+
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), randomDuration * 1000);
+    }
+
+    function createBigHeart() {
+      const bigHeart = document.createElement('div');
+      bigHeart.classList.add('big-heart');
+      bigHeart.innerHTML = `
+        ❤️
+        <img src="shin.png" alt="Center Image">
+      `;
+      document.body.appendChild(bigHeart);
+
+      createHeartTornado();
+      createParticles(window.innerWidth / 2, window.innerHeight / 2);
+
+      setTimeout(() => {
+        bigHeart.remove();
+      }, 3000);
+    }
+
+    function createHeartTornado() {
+      const tornado = document.createElement('div');
+      tornado.classList.add('small-heart-tornado');
+
+      for (let i = 0; i < 100; i++) {
+        const smallHeart = document.createElement('div');
+        smallHeart.classList.add('heart', 'rainbow-heart');
+        smallHeart.innerHTML = '❤️';
+        smallHeart.style.left = `${Math.random() * window.innerWidth}px`;
+        smallHeart.style.top = `${Math.random() * window.innerHeight}px`;
+        smallHeart.style.transform = `rotate(${Math.random() * 360}deg)`;
+        tornado.appendChild(smallHeart);
+      }
+
+      document.body.appendChild(tornado);
+      setTimeout(() => tornado.remove(), 3000);
+    }
+
+    function updateComboCounter() {
+      const counter = document.querySelector('.combo-counter');
+      counter.textContent = `Combo: ${comboCount}`;
+      counter.style.fontSize = `${24 + Math.min(comboCount, 20)}px`;
+    }
+
+    document.addEventListener('click', (e) => {
+      const currentTime = Date.now();
+      if (currentTime - lastClickTime < comboTimeout) {
+        comboCount++;
+      } else {
+        comboCount = 1;
+      }
+      lastClickTime = currentTime;
+      updateComboCounter();
+
+      clickCount++;
+      createParticles(e.clientX, e.clientY);
+
+      const numHearts = Math.min(5 + Math.floor(comboCount / 5), 15);
+      for (let i = 0; i < numHearts; i++) {
+        setTimeout(() => {
+          createHeart(e.clientX, e.clientY, comboCount > 10);
+        }, i * 100);
+      }
+
+      if (clickCount === 26 || comboCount === 25) {
+        createBigHeart();
+        clickCount = 0;
+      }
+    });
+
+    setInterval(() => {
+      if (Date.now() - lastClickTime > comboTimeout) {
+        comboCount = 0;
+        updateComboCounter();
+      }
+      const x = Math.random() * window.innerWidth;
+      const y = window.innerHeight;
+      createHeart(x, y);
+    }, 1000);
+  </script>
+</body>
+</html>
